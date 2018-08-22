@@ -12,4 +12,3 @@ hello: hello.c
 
 clean:
 	rm $(EXECS)
-
