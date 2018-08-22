@@ -1,3 +1,7 @@
+*
+!*.*
+!makefile
+
 # Prerequisites
 *.d
 
