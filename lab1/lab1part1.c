@@ -46,7 +46,7 @@ int main(void)
    local_number_in_circle = Monte_carlo(local_number_of_tosses, my_rank);
    
    /* Compute global sum of local_number_in_circle and store total in variable number_in_circle in process 0*/
-   number_in_circle = number_in_circle + local_number_in_circle;
+   MPI_Reduce(&local_number_in_circle, &number_in_circle, 1, MPI_LONG_LONG, MPI_SUM, root, MPI_COMM_WORLD);
 
    if ( my_rank == 0 ){
       pi_estimate = 4*number_in_circle/((double)number_of_tosses);
