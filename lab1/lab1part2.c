@@ -18,6 +18,7 @@
 int Global_sum(int my_int, int my_rank, int comm_sz, MPI_Comm comm); 
 
 const int MAX_CONTRIB = 20;
+#define root 0
 
 int main(void) 
 {
@@ -40,6 +41,7 @@ int main(void)
    {
       all_ints = malloc(comm_sz*sizeof(int));
       /* Gather from each process each my_int to send back to process 0 to store all summands in array all_ints*/
+      MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, root, comm);
       printf("Ints being summed:\n   ");
       for (i = 0; i < comm_sz; i++)
          printf("%d ", all_ints[i]);
@@ -49,8 +51,8 @@ int main(void)
    } else 
    {
       /* Gather from each process each my_int to send back to process 0 to store all summands in array all_ints*/
+      MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, root, comm);
    }
-   
    MPI_Finalize();
    return 0;
 }  /* main */
@@ -79,12 +81,14 @@ int Global_sum(
          if (partner < comm_sz) 
          {
             /* Recv value from partner into recvtemp */ 
+            MPI_Recv(&recvtemp, sizeof(int), MPI_INT, partner, root, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             my_sum += recvtemp;
          }
          bitmask <<= 1;
       } else 
       {
          /* Send value in my_sum to partner process */ 
+         MPI_Send(&my_sum, sizeof(int), MPI_INT, partner, root, MPI_COMM_WORLD);
          break;
       }
    }  /* while */
