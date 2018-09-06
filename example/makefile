@@ -7,7 +7,7 @@ all: ${EXECS}
 
 
 hello: hello.c
-	$(MPICC) $(MPIFLAGS) -c $< -o $@
+	$(MPICC) $(MPIFLAGS) $< -o $@
 
 
 clean:
