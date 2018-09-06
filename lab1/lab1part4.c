@@ -20,6 +20,7 @@
 #include <time.h>
 #include "mpi.h"
 
+#define CLOCK 1
 /* Use these parameters for generating times
  */
 #ifndef DEBUG
@@ -51,7 +52,8 @@ double ping_pong(char mesg[], int mesg_size, int iters, MPI_Comm comm, int p, in
 int next_size(int current_size);
 
 /*-------------------------------------------------------------------*/
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
    int test, mesg_size, i;
    double elapsed;
    double times[TEST_COUNT];
@@ -65,7 +67,8 @@ int main(int argc, char* argv[]) {
    comm = MPI_COMM_WORLD;
    MPI_Comm_size(comm, &p);
    MPI_Comm_rank(comm, &my_rank);
-   if (p != 2) {
+   if (p != 2) 
+   {
       if (my_rank == 0)
          fprintf(stderr, "Use two processes\n");
       MPI_Finalize();
@@ -83,19 +86,20 @@ int main(int argc, char* argv[]) {
    /* Resolution */
    elapsed = ping_pong(message, 0, RES_TEST_ITERS, comm, p, my_rank);
    if (my_rank == 0)
-#     ifndef CLOCK
+   #ifndef CLOCK
       fprintf(stderr, "Min ping_pong = %8.5e, Clock tick = %8.5e\n", elapsed/(2*RES_TEST_ITERS), MPI_Wtick());
-#     else
+   #else
       fprintf(stderr, "Min ping_pong = %8.5e, Clock tick = %8.5e\n", elapsed/(2*RES_TEST_ITERS), 1.0/clocks_per_sec);
-#     endif
+   #endif
 
-   for (mesg_size = MIN_MESG_SIZE; mesg_size <= MAX_MESG_SIZE; 
-        mesg_size = next_size(mesg_size)) {
-      for (test = 0; test < TEST_COUNT; test++) {
+   for (mesg_size = MIN_MESG_SIZE; mesg_size <= MAX_MESG_SIZE; mesg_size = next_size(mesg_size)) 
+   {
+      for (test = 0; test < TEST_COUNT; test++) 
+      {
          times[test] = ping_pong(message, mesg_size, PING_PONG_ITERS, comm, p, my_rank);
       }  /* for test */
-
-      if (my_rank == 0) {
+      if (my_rank == 0) 
+      {
          for (test = 0; test < TEST_COUNT; test++)
             printf("%d %8.5e\n", mesg_size, times[test]/(2*PING_PONG_ITERS));
       }
@@ -107,42 +111,51 @@ int main(int argc, char* argv[]) {
 
 
 /*-------------------------------------------------------------------*/
-double ping_pong(char mesg[], int mesg_size, int iters, MPI_Comm comm, 
-               int p, int my_rank) {
+double ping_pong(char mesg[], int mesg_size, int iters, MPI_Comm comm, int p, int my_rank) 
+{
    int i;
    MPI_Status status;
-   double start;
+   double start, finish;
 
-   if (my_rank == 0) {
-#     ifndef CLOCK
-      /* start timer for measurement with MPI_Wtime() */
-#     else
-      /* start timer for measurement with clock() */
-#     endif
-      for (i = 0; i < iters; i++) {
+   if (my_rank == 0) 
+   {
+      #ifndef CLOCK
+         /* start timer for measurement with MPI_Wtime() */
+         start = MPI_Wtime();
+      #else
+         /* start timer for measurement with clock() */
+         start = clock();
+      #endif
+      for (i = 0; i < iters; i++) 
+      {
          MPI_Send(mesg, mesg_size, MPI_CHAR, 1, 0, comm);
          MPI_Recv(mesg, mesg_size, MPI_CHAR, 1, 0, comm, &status);
       }
-#     ifndef CLOCK
-      /* return elapsed time as measured by MPI_Wtime() */ 
-#     else
-      /* return elapsed time as measured by clock() */ 
-#     endif
-   } else if (my_rank == 1) {
-      for (i = 0; i < iters; i++) {
+      #ifndef CLOCK
+         /* return elapsed time as measured by MPI_Wtime() */
+         finish = MPI_Wtime();
+      #else
+         /* return elapsed time as measured by clock() */ 
+         finish = clock();
+      #endif
+   } else if (my_rank == 1) 
+   {
+      for (i = 0; i < iters; i++) 
+      {
          MPI_Recv(mesg, mesg_size, MPI_CHAR, 0, 0, comm, &status);
-#        ifdef DEBUG
-         print_buffer(mesg, mesg_size, 1);
-#        endif
+         #ifdef DEBUG
+            print_buffer(mesg, mesg_size, 1);
+         #endif
          MPI_Send(mesg, mesg_size, MPI_CHAR, 0, 0, comm);
       }
    }
-   return 0.0;
+   return finish - start;
 }  /* ping_pong */
 
 
 /*-------------------------------------------------------------------*/
-void print_buffer(char mesg[], int mesg_size, int my_rank) {
+void print_buffer(char mesg[], int mesg_size, int my_rank) 
+{
    char temp[MAX_MESG_SIZE + 1];
 
    memcpy(temp, mesg, mesg_size);
@@ -153,7 +166,8 @@ void print_buffer(char mesg[], int mesg_size, int my_rank) {
 
 
 /*-------------------------------------------------------------------*/
-int next_size(int current_size) {
+int next_size(int current_size) 
+{
 /* return current_size + INCREMENT; */
 
    if (current_size == 0)

@@ -81,14 +81,14 @@ int Global_sum(
          if (partner < comm_sz) 
          {
             /* Recv value from partner into recvtemp */ 
-            MPI_Recv(&recvtemp, sizeof(int), MPI_INT, partner, root, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            MPI_Recv(&recvtemp, 1, MPI_INT, partner, root, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             my_sum += recvtemp;
          }
          bitmask <<= 1;
       } else 
       {
          /* Send value in my_sum to partner process */ 
-         MPI_Send(&my_sum, sizeof(int), MPI_INT, partner, root, MPI_COMM_WORLD);
+         MPI_Send(&my_sum, 1, MPI_INT, partner, root, MPI_COMM_WORLD);
          break;
       }
    }  /* while */
