@@ -42,12 +42,14 @@ double Trap(double local_a, double local_b, int local_n, double h);    /* Calcul
 double f(double x); /* function we're integrating */
 
 /*--------------------------------------------------------------*/
-int main(int argc, char** argv) {
+int main(int argc, char** argv) 
+{
     long        i;
     pthread_t*  thread_handles;  
 	
     total = 0.0;
-    if (argc != 3) {
+    if (argc != 3) 
+    {
 		fprintf(stderr, "usage: %s <number of threads> <method>\n", 
                       argv[0]);
 		exit(0);
@@ -69,12 +71,14 @@ int main(int argc, char** argv) {
     sem_init(&sem, 0, 1);
 	
     /* Start the threads. */
-    for (i = 0; i < thread_count; i++) {
+    for (i = 0; i < thread_count; i++) 
+    {
         /* create thread with attribute thread_handle[i], executing the function Thread_work, with rank i */
     }
 	
     /* Wait for threads to complete. */
-    for (i = 0; i < thread_count; i++) {
+    for (i = 0; i < thread_count; i++) 
+    {
         /* join corresponding threads */
     }
 	
@@ -91,7 +95,8 @@ int main(int argc, char** argv) {
 } /*  main  */
 
 /*--------------------------------------------------------------*/
-void *Thread_work(void* rank) {
+void *Thread_work(void* rank) 
+{
     double      local_a;   /* Left endpoint my thread   */
     double      local_b;   /* Right endpoint my thread  */
     double      my_int;    /* Integral over my interval */
@@ -104,18 +109,19 @@ void *Thread_work(void* rank) {
 	
     my_int = Trap(local_a, local_b, local_n, h);
 	
-    switch (method) {
+    switch (method) 
+    {
         case 2:
 	    /* 
 	    semaphore critical section to add local integral to total
 	    */ 
-	break;
-	case 3:
+    	break;
+    	case 3:
 	    /* 
 	    busy-wait critical section to add local integral to total
 	    */ 
-	break;
-	default:
+    	break;
+    	default:
 	    /* 
 	    mutex critical section to add local integral to total
 	    */ 
@@ -131,7 +137,8 @@ double Trap(
 			double  local_a   /* in */,
 			double  local_b   /* in */,
 			int     local_n   /* in */,
-			double  h         /* in */) {
+			double  h         /* in */) 
+{
 	
     double integral;   /* Store result in integral  */
     double x;
@@ -149,7 +156,8 @@ double Trap(
 
 
 /*--------------------------------------------------------------*/
-double f(double x) {
+double f(double x) 
+{
     double return_val;
 	
     return_val = x*x;

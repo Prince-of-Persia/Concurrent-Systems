@@ -17,6 +17,7 @@ lab2part5: lab2part5.c
 	$(CC) $(CFLAGS) $< -o $@
 
 
+.PHONY: clean
 clean:
 	rm $(EXECS)
 

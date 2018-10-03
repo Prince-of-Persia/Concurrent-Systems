@@ -50,7 +50,8 @@ void Print_vector(char* title, double y[], double m);
 void *Pth_mat_vect(void* rank);
 
 /*------------------------------------------------------------------*/
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
    long       thread;
    pthread_t* thread_handles;
 
@@ -59,9 +60,9 @@ int main(int argc, char* argv[]) {
    m = strtol(argv[2], NULL, 10);
    n = strtol(argv[3], NULL, 10);
 
-#  ifdef DEBUG
+   #ifdef DEBUG
    printf("thread_count =  %d, m = %d, n = %d\n", thread_count, m, n);
-#  endif
+   #endif
 
    thread_handles = malloc(thread_count*sizeof(pthread_t));
    A = malloc(m*n*sizeof(double));
@@ -69,14 +70,14 @@ int main(int argc, char* argv[]) {
    y = malloc(m*sizeof(double));
    
    Gen_matrix(A, m, n);
-#  ifdef DEBUG
+   #ifdef DEBUG
    Print_matrix("We generated", A, m, n); 
-#  endif
+   #endif
 
    Gen_vector(x, n);
-#  ifdef DEBUG
+   #ifdef DEBUG
    Print_vector("We generated", x, n); 
-#  endif
+   #endif
 
    for (thread = 0; thread < thread_count; thread++)
       pthread_create(&thread_handles[thread], NULL,
@@ -85,9 +86,9 @@ int main(int argc, char* argv[]) {
    for (thread = 0; thread < thread_count; thread++)
       pthread_join(thread_handles[thread], NULL);
 
-#  ifdef DEBUG
+   #ifdef DEBUG
    Print_vector("The product is", y, m); 
-#  endif
+   #endif
 
    free(A);
    free(x);
@@ -103,7 +104,8 @@ int main(int argc, char* argv[]) {
  *            be, and terminate
  * In arg :   prog_name
  */
-void Usage (char* prog_name) {
+void Usage (char* prog_name) 
+{
    fprintf(stderr, "usage: %s <thread_count> <m> <n>\n", prog_name);
    exit(0);
 }  /* Usage */
@@ -114,8 +116,9 @@ void Usage (char* prog_name) {
  * In args:     prompt, m, n
  * Out arg:     A
  */
-void Read_matrix(char* prompt, double A[], int m, int n) {
-   int             i, j;
+void Read_matrix(char* prompt, double A[], int m, int n) 
+{
+   int i, j;
 
    printf("%s\n", prompt);
    for (i = 0; i < m; i++) 
@@ -130,7 +133,8 @@ void Read_matrix(char* prompt, double A[], int m, int n) {
  * In args:  m, n
  * Out arg:  A
  */
-void Gen_matrix(double A[], int m, int n) {
+void Gen_matrix(double A[], int m, int n) 
+{
    int i, j;
    for (i = 0; i < m; i++)
       for (j = 0; j < n; j++)
@@ -144,7 +148,8 @@ void Gen_matrix(double A[], int m, int n) {
  * In arg:   n
  * Out arg:  A
  */
-void Gen_vector(double x[], int n) {
+void Gen_vector(double x[], int n) 
+{
    int i;
    for (i = 0; i < n; i++)
       x[i] = random()/((double) RAND_MAX);
@@ -156,8 +161,9 @@ void Gen_vector(double x[], int n) {
  * In arg:          prompt, n
  * Out arg:         x
  */
-void Read_vector(char* prompt, double x[], int n) {
-   int   i;
+void Read_vector(char* prompt, double x[], int n) 
+{
+   int i;
 
    printf("%s\n", prompt);
    for (i = 0; i < n; i++) 
@@ -172,7 +178,8 @@ void Read_vector(char* prompt, double x[], int n) {
  * Global in vars: A, x, m, n, thread_count
  * Global out var: y
  */
-void *Pth_mat_vect(void* rank) {
+void *Pth_mat_vect(void* rank) 
+{
    long my_rank = (long) rank;
    int i;
    int j; 
@@ -183,18 +190,20 @@ void *Pth_mat_vect(void* rank) {
    double start, finish;
    double temp;
 
-#  ifdef DEBUG
+   #ifdef DEBUG
    printf("Thread %ld > local_m = %d, sub = %d\n",
          my_rank, local_m, sub);
-#  endif
+   #endif
 
    GET_TIME(start);
-   for (i = my_first_row; i < my_last_row; i++) {
+   for (i = my_first_row; i < my_last_row; i++) 
+   {
       y[i] = 0.0;
-      for (j = 0; j < n; j++) {
-          temp = A[sub++];
-          temp *= x[j];
-          y[i] += temp;
+      for (j = 0; j < n; j++) 
+      {
+         temp = A[sub++];
+         temp *= x[j];
+         y[i] += temp;
       }
    }
    GET_TIME(finish);
@@ -210,11 +219,13 @@ void *Pth_mat_vect(void* rank) {
  * Purpose:     Print the matrix
  * In args:     title, A, m, n
  */
-void Print_matrix( char* title, double A[], int m, int n) {
-   int   i, j;
+void Print_matrix( char* title, double A[], int m, int n) 
+{
+   int i, j;
 
    printf("%s\n", title);
-   for (i = 0; i < m; i++) {
+   for (i = 0; i < m; i++) 
+   {
       for (j = 0; j < n; j++)
          printf("%6.3f ", A[i*n + j]);
       printf("\n");
@@ -227,8 +238,9 @@ void Print_matrix( char* title, double A[], int m, int n) {
  * Purpose:     Print a vector
  * In args:     title, y, m
  */
-void Print_vector(char* title, double y[], double m) {
-   int   i;
+void Print_vector(char* title, double y[], double m) 
+{
+   int i;
 
    printf("%s\n", title);
    for (i = 0; i < m; i++)

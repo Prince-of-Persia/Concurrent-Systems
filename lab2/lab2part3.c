@@ -27,7 +27,8 @@ int separator(char* current, char* seps);
 void *Tokenize(void* rank);  /* Thread function */
 
 /*--------------------------------------------------------------------*/
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
    long       thread;
    pthread_t* thread_handles; 
 
@@ -65,7 +66,8 @@ int main(int argc, char* argv[]) {
  * Return val:  pointer to copy of next token in in_string or NULL if no new token
  *
  */
-char *my_strtok(char* seps, char** next_string_p) {
+char *my_strtok(char* seps, char** next_string_p) 
+{
    char* token;
    int   length = 0;
    char* start;
@@ -77,10 +79,11 @@ char *my_strtok(char* seps, char** next_string_p) {
          return NULL;
       else
          current++;
-   start = current;
+         start = current;
 
    /* Find end of token */
-   while (!separator(current, seps)) {
+   while (!separator(current, seps)) 
+   {
       length++;
       current++;
    }
@@ -102,7 +105,8 @@ char *my_strtok(char* seps, char** next_string_p) {
  * In args:     current:  pointer to current character
  *              seps:  list of characters to checkrank
  */
-int separator(char* current, char* seps) {
+int separator(char* current, char* seps) 
+{
    int len = strlen(seps);
    int i;
 
@@ -120,7 +124,8 @@ int separator(char* current, char* seps) {
  * Global vars: thread_count (in), sems (in/out)
  * Return val:  Ignored
  */
-void *Tokenize(void* rank) {
+void *Tokenize(void* rank) 
+{
    long my_rank = (long) rank;
    int count;
    char *fg_rv;
@@ -130,13 +135,15 @@ void *Tokenize(void* rank) {
 
    /* Have each thread read consecutive lines and tokenize them in turn */
    fg_rv = fgets(my_line, MAX, stdin);
-   while (fg_rv != NULL) {
+   while (fg_rv != NULL) 
+   {
       printf("Thread %ld > my line = %s", my_rank, my_line);
 
       count = 0;
       next_string = my_line;
       my_string = my_strtok(" \t\n", &next_string);
-      while ( my_string != NULL ) {
+      while ( my_string != NULL ) 
+      {
          count++;
          printf("Thread %ld > string %d = %s\n", my_rank, count, my_string);
          free (my_string);

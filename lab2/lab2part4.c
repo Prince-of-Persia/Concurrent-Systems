@@ -25,7 +25,8 @@ int buffer = 0;
 void *producer(void *ptr);
 void *consumer(void *ptr);
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) 
+{
   pthread_t pro, con;
 
   // Initialize the mutex and condition variables
@@ -50,10 +51,12 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void *producer(void* ptr) {
+void *producer(void* ptr) 
+{
   int i;
 
-  for (i = 1; i <= MAX; i++) {
+  for (i = 1; i <= MAX; i++) 
+  {
     pthread_mutex_lock(&the_mutex);	        
     while (buffer != 0)		                
       pthread_cond_wait(&condp, &the_mutex);
@@ -64,10 +67,12 @@ void *producer(void* ptr) {
   return NULL;
 }
 
-void *consumer(void* ptr) {
+void *consumer(void* ptr) 
+{
   int i;
 
-  for (i = 1; i <= MAX; i++) {
+  for (i = 1; i <= MAX; i++) 
+  {
     pthread_mutex_lock(&the_mutex);
     while (buffer == 0)
       pthread_cond_wait(&condc, &the_mutex);

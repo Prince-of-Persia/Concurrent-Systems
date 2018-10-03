@@ -25,7 +25,8 @@
 
 
 #ifdef _MAIN_
-int main(void) {
+int main(void) 
+{
    int n, i; 
    unsigned seed = 1, x;
    double y;
@@ -34,11 +35,13 @@ int main(void) {
    scanf("%d", &n);
 
    x = my_rand(&seed);
-   for (i = 0; i < n; i++) {
+   for (i = 0; i < n; i++) 
+   {
       x = my_rand(&x);
       printf("%u\n", x);
    }
-   for (i = 0; i < n; i++) {
+   for (i = 0; i < n; i++) 
+   {
       y = my_drand(&x);
       printf("%e\n", y);
    }
@@ -62,7 +65,8 @@ int main(void) {
  *     to my_rand, and the value returned from one call should
  *     simply be passed to the next call.
  */
-unsigned my_rand(unsigned* seed_p) {
+unsigned my_rand(unsigned* seed_p) 
+{
    long long z = *seed_p;
    z *= MR_MULTIPLIER; 
 // z += MR_INCREMENT;
@@ -77,7 +81,8 @@ unsigned my_rand(unsigned* seed_p) {
  *
  * Note:          See my_rand for info about seed_p
  */
-double my_drand(unsigned* seed_p) {
+double my_drand(unsigned* seed_p) 
+{
    unsigned x = my_rand(seed_p);
    double y = x/MR_DIVISOR;
    return y;

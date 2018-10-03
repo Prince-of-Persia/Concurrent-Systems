@@ -31,7 +31,8 @@ void Get_args(int argc, char* argv[]);
 void *Thread_work(void* rank);
 
 /*---------------------------------------------------------------------*/
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
 	long i;
 	pthread_t* thread_handles;
 	double pi_estimate;
@@ -41,11 +42,13 @@ int main(int argc, char* argv[]) {
 	thread_handles = malloc(thread_count*sizeof(pthread_t));
 	/* initialize mutex */
 	
-	for(i = 0; i < thread_count; i++) {
+	for(i = 0; i < thread_count; i++) 
+	{
 		/* create thread with attribute thread_handle[i], executing the function Thread_work, with rank i */
 	}
 		
-	for(i = 0; i < thread_count; i++) {
+	for(i = 0; i < thread_count; i++) 
+	{
 		/* join corresponding threads */
 	}
 	
@@ -64,7 +67,8 @@ int main(int argc, char* argv[]) {
  * Global out vars:	number_in_circle
  */
 
-void *Thread_work(void* rank) {
+void *Thread_work(void* rank) 
+{
 	long my_rank = (long) rank;
 	long long int toss;
 	long long int local_number_in_circle = 0;
@@ -74,12 +78,13 @@ void *Thread_work(void* rank) {
 	double x, y, distance_squared;
         unsigned seed = my_rank+1;  /* must be nonzero */
 	
-	for(toss = start; toss < finish; toss++) {
+	for(toss = start; toss < finish; toss++) 
+	{
         /* x= random between -1 and 1 */
         /* y= random between -1 and 1 */
         /* distance_squared = distance squared of dart toss from centre position */
 		if (distance_squared <= 1)
-			/* if dart falls in unit circle, increment the counter local_number_in_circle */
+		local_number_in_circle++; /* if dart falls in unit circle, increment the counter local_number_in_circle */
 	}
 
 	    /* 
@@ -98,7 +103,8 @@ void *Thread_work(void* rank) {
  * Globals out: thread_count, n
  */
 
-void Get_args(int argc, char* argv[]) {
+void Get_args(int argc, char* argv[]) 
+{
 	thread_count = strtol(argv[1], NULL, 10);  
 	number_of_tosses = strtoll(argv[2], NULL, 10);
 }  /* Get_args */
