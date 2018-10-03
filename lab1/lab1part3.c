@@ -40,12 +40,14 @@ int main(void)
    if ( my_rank == 0) 
    {
       all_ints = malloc(comm_sz*sizeof(int)); sum_proc = malloc(comm_sz*sizeof(int));
-      MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, 0, comm);/* Gather from each process each my_int to send back to process 0 to store all summands in array all_ints */
+      /* Gather from each process each my_int to send back to process 0 to store all summands in array all_ints */
+      MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, 0, comm);
       printf("Ints being summed:\n   ");
       for (i = 0; i < comm_sz; i++)
          printf("%d ", all_ints[i]);
       printf("\n");
-      MPI_Gather(&sum, 1, MPI_INT, sum_proc, 1, MPI_INT, 0, comm);/* Gather from each process each sum to send back to process 0 and store each processes' sum in array sum_proc */
+      /* Gather from each process each sum to send back to process 0 and store each processes' sum in array sum_proc */
+      MPI_Gather(&sum, 1, MPI_INT, sum_proc, 1, MPI_INT, 0, comm);
       printf("Sums on the processes:\n   ");
       for (i = 0; i < comm_sz; i++)
          printf("%d ", sum_proc[i]);
@@ -53,8 +55,10 @@ int main(void)
       free(all_ints);
    } else 
    {
-       MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, 0, comm);/* Gather from each process each my_int to send back to process 0 and store all summands in array all_ints */
-       MPI_Gather(&sum, 1, MPI_INT, sum_proc, 1, MPI_INT, 0, comm);/* Gather from each process each sum to send back to process 0 and store each processes' sum in array sum_proc */
+      /* Gather from each process each my_int to send back to process 0 and store all summands in array all_ints */
+      MPI_Gather(&my_int, 1, MPI_INT, all_ints, 1, MPI_INT, 0, comm);
+      /* Gather from each process each sum to send back to process 0 and store each processes' sum in array sum_proc */
+      MPI_Gather(&sum, 1, MPI_INT, sum_proc, 1, MPI_INT, 0, comm);
    }
    
    MPI_Finalize();
